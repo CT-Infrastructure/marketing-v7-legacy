@@ -93,6 +93,7 @@ hashes = [dict(path=str(f.relative_to(ROOT)), sha256=hashlib.sha256(f.read_bytes
 binding = dict(scope="NEW_COMPONENT_TREE", candidate_files=hashes,
                historical_envelope_not_reused=True)
 report=dict(binding=binding,checks=len(results),failures=[x for x in results if not x["passed"]],results=results)
+OUT.mkdir(parents=True, exist_ok=True)
 (OUT/"probe-results.json").write_text(json.dumps(report,indent=2)+"\n")
 print(json.dumps(dict(checks=len(results),failed=len(report["failures"])),indent=2))
 sys.exit(1 if report["failures"] else 0)
