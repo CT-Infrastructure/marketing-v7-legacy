@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "task_key": "CP090",
+  "classification": "LEGACY_ISOLATED",
+  "deployment_decision": "isolated-preservation-no-activation",
+  "classification_reason": "Existing native legacy workload retained as evidence only; no runtime selected or qualified. No container or always-on service is created.",
+  "source": {
+    "reference": "reference/workflows/L01.json",
+    "upstream": null,
+    "version": null,
+    "edition": null,
+    "digest": null,
+    "architecture": null,
+    "status": "UNKNOWN",
+    "blocker_owner": "Platform owner"
+  },
+  "processes": {
+    "persistent": [
+      {
+        "role": "Factorio/FLE native stage",
+        "enabled": false,
+        "observed": false,
+        "runtime": null
+      }
+    ],
+    "transient": [
+      {
+        "role": "custom controller actions",
+        "enabled": false,
+        "observed": false,
+        "runtime": null
+      }
+    ],
+    "inventory_status": "UNKNOWN",
+    "blocker_owner": "Platform owner"
+  },
+  "dependencies": {
+    "status": "UNKNOWN",
+    "value": null,
+    "blocker_owner": "Platform owner"
+  },
+  "database_cache": {
+    "status": "UNKNOWN",
+    "value": null,
+    "blocker_owner": "Platform owner"
+  },
+  "identity": {
+    "uid": null,
+    "gid": null,
+    "runtime_owner": null,
+    "status": "UNKNOWN",
+    "blocker_owner": "Service owner"
+  },
+  "network": {
+    "ingress": "DENY",
+    "egress": "DENY",
+    "rcon": "PRIVATE_DISABLED",
+    "public_route": false,
+    "enforcement": "NOT_RUN"
+  },
+  "volumes": {
+    "paths": null,
+    "ownership": null,
+    "access": "UNKNOWN",
+    "automatic_provisioning": false,
+    "deletion": false,
+    "blocker_owner": "Infrastructure owner"
+  },
+  "secret_references": {
+    "status": "UNKNOWN",
+    "value": null,
+    "blocker_owner": "Security owner"
+  },
+  "health": {
+    "liveness": "NOT_RUN",
+    "startup": "DISABLED",
+    "readiness": false,
+    "probe": null
+  },
+  "recovery": {
+    "migration": "FORBIDDEN",
+    "backup_identity": null,
+    "restore": "HOLD_ONLY",
+    "rollback": "HOLD_ONLY",
+    "reconciliation": "UNRESOLVED",
+    "evidence": "NOT_RUN",
+    "blocker_owner": "Backup owner"
+  },
+  "resources": {
+    "runtime_cpu": null,
+    "runtime_ram_mib": null,
+    "runtime_disk_mib": null,
+    "runtime_gpu": null,
+    "enforcement": "NOT_RUN",
+    "worker_reservation": {
+      "cpu": 1,
+      "memory_mib": 1536,
+      "gpu": 0,
+      "slots": 1,
+      "integration": 0
+    },
+    "blocker_owner": "Infrastructure owner"
+  },
+  "redaction": {
+    "mode": "FIXED_ENUM_ALLOWLIST",
+    "raw_input_logging": false
+  },
+  "licenses": {
+    "repository": "MIT per F15 engineering decision",
+    "third_party": null,
+    "preserve_notices": true,
+    "status": "UNKNOWN",
+    "blocker_owner": "Platform owner"
+  },
+  "sbom": {
+    "status": "UNKNOWN",
+    "value": null,
+    "blocker_owner": "Platform owner"
+  },
+  "vulnerabilities": {
+    "status": "UNKNOWN",
+    "value": null,
+    "blocker_owner": "Security owner"
+  },
+  "safety": {
+    "controller_enabled": false,
+    "autostart": false,
+    "activation_enabled": false,
+    "outbound_state": "HOLD",
+    "intent": "held",
+    "original_window": null
+  },
+  "qualification": {
+    "native_install": "NOT_RUN",
+    "native_recovery": "NOT_RUN",
+    "native_version": "NOT_RUN",
+    "source_acceptance_cases": "NOT_RUN",
+    "complete": false
+  }
+}
