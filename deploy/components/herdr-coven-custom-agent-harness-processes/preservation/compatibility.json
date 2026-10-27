@@ -1,0 +1,17 @@
+{
+  "schema": "cp092.compatibility.v1",
+  "status": "UNKNOWN",
+  "native_installation": "BLOCKED",
+  "containerization": "NOT_APPLICABLE_OFFLINE_CONTRACT",
+  "quadlet": "NOT_RENDERED",
+  "supported_runtime": null,
+  "supported_database": null,
+  "supported_cache": null,
+  "source_id": "SRC-002",
+  "owner_role": "Platform owner",
+  "evidence_ref": null,
+  "activation_requires_separate_scope": true,
+  "prerequisite_acceptance": "CONTROLLER_VERIFIED_NOT_AUTHOR_PROVEN",
+  "cp090_required": false,
+  "cp091_required": false
+}

@@ -1,0 +1,249 @@
+{
+  "schema": "cp092.component.v1",
+  "component_id": "CP092",
+  "name": "Herdr; Coven; custom agent/harness processes",
+  "function": "Historical coding sessions",
+  "classification": "LEGACY_ISOLATED",
+  "deployment_decision": "isolated-preservation-no-activation",
+  "package_role": "OFFLINE_PRESERVATION_CONTRACT",
+  "hard_prerequisites": [
+    "F01",
+    "F15"
+  ],
+  "interfaces": [
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06",
+    "L07",
+    "L08"
+  ],
+  "production_authorized": false,
+  "production_gate": "G02_HOLD",
+  "auto_activation": false,
+  "network": {
+    "ingress": "DENY",
+    "egress": "DENY",
+    "secret_references": []
+  },
+  "resources": {
+    "cpu": 0,
+    "memory_mib": 0,
+    "disk_mib": 0,
+    "gpu": 0,
+    "pids": 0,
+    "integration": 0,
+    "slots": 0
+  },
+  "native_facts": {
+    "version": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "edition": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "source": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "digest": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "architecture": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "runtime_dependencies": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "database": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "cache": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "uid": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "gid": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "persistent_processes": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "transient_processes": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "volumes": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "data_ownership": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "health": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "startup": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "readiness": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "migration": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "backup": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "restore": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "rollback": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "license": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "sbom": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "vulnerabilities": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
+    "native_resource_limits": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    }
+  },
+  "native_acceptance": [
+    {
+      "id": "CP092-AC01",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    },
+    {
+      "id": "CP092-AC02",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    },
+    {
+      "id": "CP092-AC03",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    },
+    {
+      "id": "CP092-AC04",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    },
+    {
+      "id": "CP092-AC05",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    },
+    {
+      "id": "CP092-AC06",
+      "status": "NOT_RUN",
+      "evidence_ref": null
+    }
+  ]
+}
