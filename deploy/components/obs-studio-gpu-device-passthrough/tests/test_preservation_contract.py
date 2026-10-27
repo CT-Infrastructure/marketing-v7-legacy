@@ -262,5 +262,171 @@ class PreservationContractTests(unittest.TestCase):
         self.assertEqual(component['resources']['integration'], 0)
 
 
+class PublishedPackageTests(unittest.TestCase):
+    """Mutate copies of actual published shapes; never touch native artifacts."""
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            'cp091_public_contracts', BASE/'preservation/validate_contracts.py')
+        cls.validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.validator)
+
+    def setUp(self):
+        self.documents = self.validator.load_package(BASE)
+
+    def reject_change(self, filename, keys, value):
+        mutated = copy.deepcopy(self.documents)
+        target = mutated[filename]
+        for key in keys[:-1]:
+            target = target[key]
+        target[keys[-1]] = value
+        with self.subTest(file=filename, keys=keys, value=repr(value)):
+            with self.assertRaises(ValueError):
+                self.validator.validate_package(mutated)
+
+    def test_all_actual_json_and_distinct_fixtures_validate(self):
+        self.assertEqual(set(self.documents), set(self.validator.FILES))
+        self.assertEqual(len(self.documents), 8)
+        self.assertEqual(self.validator.validate_package(self.documents),
+                         {'status': 'HOLD', 'documents': 8,
+                          'native_qualification': 'NOT_RUN', 'G02': 'HOLD'})
+        # Published null identity and fixture concrete identity are distinct.
+        self.assertIsNone(self.documents['preservation/held-state.json']['controller'])
+        with self.assertRaises(ValueError):
+            self.validator.validate_held(self.documents['tests/fixtures/synthetic-held.json'])
+        with self.assertRaises(ValueError):
+            self.validator.validate_synthetic_held(self.documents['preservation/held-state.json'])
+
+    def test_actual_safety_flags_all_reject_activation_or_wrong_types(self):
+        cases = [('component.json', ['production_authorized']),
+                 ('component.json', ['placement_approved']),
+                 ('component.json', ['restore', 'autoactivate']),
+                 ('component.json', ['health', 'startup_allowed']),
+                 ('component.json', ['processes', 'new_service']),
+                 ('component.json', ['migration', 'allowed']),
+                 ('component.json', ['ingress', 'allowed']),
+                 ('component.json', ['egress', 'allowed'])]
+        cases += [('preservation/held-state.json', ['effects', effect])
+                  for effect in self.validator.EFFECTS]
+        for filename, keys in cases:
+            for value in (True, 0, 1, 'false', None, [], {}):
+                self.reject_change(filename, keys, value)
+
+    def test_actual_qualification_and_complete_acceptance_cannot_promote(self):
+        cases = [('component.json', ['native_qualification'], 'PASS'),
+                 ('component.json', ['G02'], 'APPROVED'),
+                 ('component.json', ['acceptance', 'A1'], 'PASS'),
+                 ('component.json', ['acceptance'], {'A1': 'NOT_RUN'}),
+                 ('preservation/held-state.json', ['native_qualification'], 'PASS'),
+                 ('preservation/compatibility.json', ['qualification'], 'PASS')]
+        for filename, keys, value in cases:
+            self.reject_change(filename, keys, value)
+
+    def test_actual_every_wrapper_exact_keys_types_and_identity(self):
+        for filename in self.validator.FILES:
+            original = self.documents[filename]
+            for key in original:
+                mutated = copy.deepcopy(self.documents)
+                del mutated[filename][key]
+                with self.subTest(file=filename, missing=key), self.assertRaises(ValueError):
+                    self.validator.validate_package(mutated)
+            self.reject_change(filename, ['private_path'], '/home/private/inventory')
+            if 'schema_version' in original:
+                for value in (True, '1', 2, None):
+                    self.reject_change(filename, ['schema_version'], value)
+            if 'task' in original:
+                self.reject_change(filename, ['task'], 'CP090')
+        self.reject_change('component.json', ['component_id'], 'CP090')
+        for filename in ('component.json', 'preservation/compatibility.json',
+                         'preservation/held-state.json',
+                         'preservation/private-artifact-contract.json'):
+            self.reject_change(filename, ['status'], 'APPROVED')
+        self.reject_change('preservation/ownership.json', ['status'], 'RETIRED')
+
+    def test_actual_facts_cannot_disappear_rename_or_hide_native_claims(self):
+        filename = 'preservation/compatibility.json'
+        self.reject_change(filename, ['facts'], {})
+        for name in self.validator.FACTS:
+            mutated = copy.deepcopy(self.documents)
+            del mutated[filename]['facts'][name]
+            with self.subTest(missing=name), self.assertRaises(ValueError):
+                self.validator.validate_package(mutated)
+            for key in ('value', 'source', 'version', 'sha256', 'evidence'):
+                self.reject_change(filename, ['facts', name, key], 'invented')
+            self.reject_change(filename, ['facts', name, 'owner'], None)
+        self.reject_change(filename, ['facts', 'unreviewed_fact'], {})
+        for name in ('rights', 'storage', 'retention', 'restore'):
+            for key in ('value', 'source', 'version', 'sha256', 'evidence'):
+                self.reject_change('preservation/ownership.json', [name, key], 'invented')
+
+    def test_actual_null_unknown_binding_and_intent_remain_uninvented(self):
+        for key in ('controller', 'generation', 'revision', 'original_cutoff',
+                    'pending_receipt'):
+            self.reject_change('preservation/held-state.json', [key], 'opaque:invented')
+        for key in ('verified_custodian', 'intent_evidence'):
+            self.reject_change('preservation/ownership.json', [key], 'opaque:invented')
+        for key in ('controller', 'pending_receipt', 'run_window', 'private_inventory'):
+            self.reject_change('preservation/ownership.json', [key], None)
+        for intent in ('HELD', 'STOPPED', 'RETIRED', 'ABSENT', True):
+            self.reject_change('preservation/ownership.json', ['intent'], intent)
+            self.reject_change('preservation/held-state.json', ['intent'], intent)
+        self.reject_change('preservation/private-artifact-contract.json',
+                           ['inventory'], {'private_path': '/home/private'})
+        self.reject_change('preservation/private-artifact-contract.json',
+                           ['rules'], ['allow unsafe references'] * 4)
+        self.reject_change('preservation/private-artifact-contract.json',
+                           ['required_reference_fields'], ['id'])
+
+    def test_actual_resources_reject_bool_zero_and_nonzero_allocations(self):
+        for filename in ('component.json', 'preservation/held-state.json'):
+            for key in ('gpu', 'integration'):
+                for value in (False, '0', 1, -1, None):
+                    self.reject_change(filename, ['resources', key], value)
+
+    def test_actual_source_pins_ids_and_counts_are_frozen(self):
+        filename = 'preservation/source-map.json'
+        for key, value in (('sha256', 'a'*64), ('sha256_lf', 'b'*64),
+                           ('revision', 'c'*40), ('git_blob_oid', 'd'*40),
+                           ('pin_match', 1), ('path', '../private'),
+                           ('group', 'CP090')):
+            self.reject_change(filename, ['sources', 0, key], value)
+        self.reject_change(filename, ['public_source_lock_sha256'], 'a'*64)
+        self.reject_change(filename, ['base_revision'], 'b'*40)
+        self.reject_change(filename, ['native_execution', 'status'], 'PASS')
+        ids = list(self.documents[filename]['traceability']['ids'])
+        ids[0], ids[1] = ids[1], ids[0]
+        self.reject_change(filename, ['traceability', 'ids'], ids)
+        duplicate = list(ids)
+        duplicate[1] = duplicate[0]
+        self.reject_change(filename, ['native_execution', 'ids'], duplicate)
+        self.reject_change(filename, ['source_acceptance', 'statuses'], {'NOT_RUN': 576})
+        self.reject_change(filename, ['traceability', 'count'], True)
+        self.reject_change(filename, ['missing_public_paths'], ['private'])
+
+    def test_actual_package_requires_every_json_and_rejects_duplicate_keys(self):
+        for filename in self.validator.FILES:
+            mutated = dict(self.documents)
+            del mutated[filename]
+            with self.subTest(missing=filename), self.assertRaises(ValueError):
+                self.validator.validate_package(mutated)
+        self.documents['extra.json'] = {}
+        with self.assertRaises(ValueError):
+            self.validator.validate_package(self.documents)
+        with self.assertRaises(ValueError):
+            self.validator.no_duplicate_keys([('status', 'HOLD'), ('status', 'PASS')])
+
+    def test_published_fixture_schema_rejects_private_refs_and_unsafe_restore(self):
+        filename = 'tests/fixtures/synthetic-private-reference.json'
+        for key in self.validator.REFERENCE_FIELDS:
+            self.reject_change(filename, [key], None)
+            self.reject_change(filename, [key], '/home/private/asset')
+        self.reject_change(filename, ['sha256'], 'A'*64)
+        self.reject_change(filename, ['evidence'], True)
+        self.reject_change('tests/fixtures/synthetic-held.json', ['generation'], True)
+        self.reject_change('tests/fixtures/synthetic-held.json',
+                           ['effects', 'restore_activation'], True)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -10,3 +10,31 @@ Current outcome: UNKNOWN inventory, HOLD execution, G02 HOLD. All 576 original n
 6. Stop on expired/revoked lease, scope change, secret exposure or uncertain effects. Notify the retained owner/trusted controller; do not create another controller or extend a cutoff. Never shut down or terminate WSL.
 
 A1 native compatibility, A2 disposable installation, A3 real sandbox/egress enforcement, A4 native backup/restore, A5 placement approval and A6 independent exact-candidate verification remain NOT_RUN. Offline tests cover contract rejection and held serialization only. Root owns independent review, exact-head CI/Codex, import and acceptance. Engineering review readiness never grants production authority.
+
+
+The offline public-package validator now checks all eight actual JSON documents,
+including ownership, held-state and private-artifact wrappers. It uses distinct
+schemas for nullable UNKNOWN public identities and synthetic bound fixtures;
+exact keys/types/fact names/A1-A6, false safety flags, cross-file consistency,
+frozen provenance rows and all 576 source IDs fail closed. Frozen hashes bind
+public provenance/ID identity only, not a blanket expected-package pass fixture.
+No native facts are filled by validation, and a successful result remains HOLD.
+A future supplied native inventory requires separately reviewed schema changes.
+
+Under an authorized scoped executor, from the component directory:
+
+```text
+python -B preservation/validate_contracts.py
+python -B -O preservation/validate_contracts.py
+python -B -m unittest discover -s tests -p test_preservation_contract.py -v
+python -B -O -m unittest discover -s tests -p test_preservation_contract.py -v
+```
+
+The CLI returns 1 for invalid/missing/duplicate-key or unrecognized JSON and
+prints a bounded generic error without rejected values. New regression tests
+mutate copies of the actual published shapes for R1's old-unchecked fields;
+no on-disk native/configuration data is modified. The original 15 test methods
+and assertions remain. Source-author AST/JSON parsing is not execution evidence;
+authorized exact-source normal/optimized runs and independent review remain due.
+R2's old optimized seven-check receipt remains historical and is superseded only
+by separately sealed controller-owned corrected operational evidence.
