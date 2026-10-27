@@ -19,3 +19,14 @@ jobs:
           persist-credentials: false
       - name: Validate package and build DAG
         run: python3 tools/validate_scope.py
+  cp091-public-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Validate CP091 public contracts (normal)
+        run: python3 -B -m unittest discover -s deploy/components/obs-studio-gpu-device-passthrough/tests -p test_*.py -v
+      - name: Validate CP091 public contracts (optimized)
+        run: python3 -B -O -m unittest discover -s deploy/components/obs-studio-gpu-device-passthrough/tests -p test_*.py -v

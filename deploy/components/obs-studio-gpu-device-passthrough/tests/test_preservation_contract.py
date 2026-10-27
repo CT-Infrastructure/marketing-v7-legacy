@@ -525,8 +525,12 @@ class PublicTextAndDecoderTests(unittest.TestCase):
             result = subprocess.run(command, capture_output=True, text=True,
                                     timeout=15, check=False)
             self.assertEqual(result.returncode, 1)
-            self.assertEqual(json.loads(result.stdout),
-                             {'status': 'INVALID', 'error_type': 'RecursionError'})
+            # Decoder depth handling varies by Python version: both decode-time
+            # recursion rejection and parsed-shape rejection must stay redacted.
+            response = json.loads(result.stdout)
+            self.assertEqual(set(response), {'status', 'error_type'})
+            self.assertEqual(response['status'], 'INVALID')
+            self.assertIn(response['error_type'], ('RecursionError', 'ValueError'))
             self.assertLess(len(result.stdout), 128)
             self.assertEqual(result.stderr, '')
             for private in ('Traceback', str(destination), str(BASE),
