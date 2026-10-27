@@ -99,14 +99,17 @@ def label(value):
             'secret-like label forbidden')
 
 
-def prose(value):
-    require(type(value) is str and 0 < len(value) <= 1024 and
-            value == value.strip() and all(32 <= ord(c) < 127 for c in value),
-            'bounded public prose required')
-    require(not any(s in value.lower() for s in
-                    ('://', '\\', '../', '/home/', '/users/', 'c:/', 'd:/',
-                     'password=', 'token=', 'secret=', '-----begin')),
-            'private path or secret-like prose forbidden')
+# These six statements are reviewed public explanatory text, not inventory.
+# Each field uses its own exact value. Future editorial changes require review;
+# accepting arbitrary prose would reopen private locator disclosure.
+PUBLIC_TEXT = {
+    'db_note': 'Not inferred absent.',
+    'resource_note': 'Engineering reservation only; native runtime limits UNKNOWN.',
+    'log_redaction': 'Opaque references and bounded synthetic results only; no native logs or config dumps.',
+    'ownership_note': 'Owner roles identify who must supply evidence; they are not verified custody.',
+    'source_authority': 'Pinned public source provenance only; no live admission or runtime proof.',
+    'source_dependencies': 'F01/F15 engineering accepted exports only. CP090 is not a prerequisite. L01-L08 are runtime interfaces, not build edges.',
+}
 
 
 def positive_integer(value):
@@ -167,7 +170,7 @@ def validate_component(value):
         'processes': {'persistent': UNKNOWN_VALUE, 'transient': UNKNOWN_VALUE,
                       'new_service': FALSE},
         'runtime_dependencies': NULL,
-        'native_db_cache': dict(UNKNOWN_VALUE, note=prose),
+        'native_db_cache': dict(UNKNOWN_VALUE, note=exact(PUBLIC_TEXT['db_note'])),
         'uid': NULL, 'gid': NULL,
         'ingress': {'allowed': FALSE, 'actual': NULL},
         'egress': {'allowed': FALSE, 'actual': NULL},
@@ -178,8 +181,8 @@ def validate_component(value):
         'restore': {'status': UNKNOWN, 'autoactivate': FALSE, 'receipt': NULL},
         'rollback': {'status': UNKNOWN, 'recipe': NULL},
         'resources': dict(ZERO_RESOURCES, cpu=exact(1), memory_mib=exact(1536),
-                          disk_mib=NULL, pids=NULL, note=prose),
-        'log_redaction': prose, 'license': NULL, 'sbom': NULL,
+                          disk_mib=NULL, pids=NULL, note=exact(PUBLIC_TEXT['resource_note'])),
+        'log_redaction': exact(PUBLIC_TEXT['log_redaction']), 'license': NULL, 'sbom': NULL,
         'vulnerability_evidence': NULL, 'unblock_owner': OWNER,
         'acceptance': {'A%d' % i: NOT_RUN for i in range(1, 7)}, 'G02': HOLD,
     })
@@ -210,7 +213,7 @@ def validate_ownership(value):
                   'intent_evidence': NULL, 'private_inventory': UNKNOWN,
                   'rights': FACT, 'retention': FACT, 'storage': FACT,
                   'restore': FACT, 'controller': UNKNOWN,
-                  'pending_receipt': UNKNOWN, 'run_window': UNKNOWN, 'note': prose})
+                  'pending_receipt': UNKNOWN, 'run_window': UNKNOWN, 'note': exact(PUBLIC_TEXT['ownership_note'])})
     # Non-UNKNOWN intent needs custody/evidence not available in this public
     # preservation packet; do not silently infer stopped/retired from UNKNOWN.
     require(value['intent'] == 'UNKNOWN', 'intent evidence unavailable: HOLD')
@@ -246,7 +249,7 @@ def validate_source_map(value):
     }
     ids = array(pattern(r'(?:[A-Z][0-9]{2}-T[0-9]{2}|BASE-[0-9]{3}|B[0-9]{2})'), 576)
     shape(value, {
-        'schema_version': exact(1), 'task': exact('CP091'), 'authority': prose,
+        'schema_version': exact(1), 'task': exact('CP091'), 'authority': exact(PUBLIC_TEXT['source_authority']),
         'base_revision': exact(BASE_REVISION),
         'public_source_lock_sha256': exact(PUBLIC_LOCK_SHA256),
         'sources': array(lambda row: shape(row, source_row), 503),
@@ -257,7 +260,7 @@ def validate_source_map(value):
         'traceability': {'count': exact(576), 'statuses': {'NOT_RUN': exact(576)},
                          'ids': ids},
         'native_execution': {'status': NOT_RUN, 'ids': ids},
-        'G02': HOLD, 'dependencies': prose,
+        'G02': HOLD, 'dependencies': exact(PUBLIC_TEXT['source_dependencies']),
     })
     require(canonical_digest(value['sources']) == SOURCE_ROWS_SHA256,
             'frozen public provenance pins changed')
@@ -333,7 +336,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         result = validate_package(load_package(args.component_dir))
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, RecursionError) as exc:
         # Do not emit rejected document content, paths or private values.
         print(json.dumps({'status': 'INVALID', 'error_type': type(exc).__name__}))
         return 1

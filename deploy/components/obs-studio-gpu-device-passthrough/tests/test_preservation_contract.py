@@ -428,5 +428,111 @@ class PublishedPackageTests(unittest.TestCase):
                            ['effects', 'restore_activation'], True)
 
 
+class PublicTextAndDecoderTests(unittest.TestCase):
+    """R3/R4 actual-field privacy and bounded CLI failure regressions."""
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            'cp091_public_contracts_privacy', BASE/'preservation/validate_contracts.py')
+        cls.validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.validator)
+
+    def test_all_six_reviewed_public_text_fields_reject_private_locators(self):
+        documents = self.validator.load_package(BASE)
+        fields = [('component.json', ('native_db_cache', 'note')),
+                  ('component.json', ('resources', 'note')),
+                  ('component.json', ('log_redaction',)),
+                  ('preservation/ownership.json', ('note',)),
+                  ('preservation/source-map.json', ('authority',)),
+                  ('preservation/source-map.json', ('dependencies',))]
+        locators = ['/srv/private/scene.json', '/mnt/private/config.json',
+                    '/var/lib/obs/private-profile', '/arbitrary/root/asset',
+                    'E:/private/scene.json', 'Z:/archive/profile.ini',
+                    'Q:\\private\\scene.json', '\\\\server\\share\\scene.json',
+                    '//server/share/config.json', 'file:///private/scene.json',
+                    'smb://private/share/config', 'https://private.invalid/scene',
+                    'scene-collection.json', 'profiles/private/basic.ini',
+                    '../private/config.json', '~/private/scene.json',
+                    'opaque:unapproved-private-scene', 'private-host:445/config']
+        for filename, keys in fields:
+            for locator in locators:
+                for value in (locator, 'Approved notes: ' + locator):
+                    candidate = copy.deepcopy(documents)
+                    target = candidate[filename]
+                    for key in keys[:-1]:
+                        target = target[key]
+                    target[keys[-1]] = value
+                    with self.subTest(file=filename, keys=keys, value=value):
+                        with self.assertRaises(ValueError):
+                            self.validator.validate_package(candidate)
+        self.assertEqual(self.validator.validate_package(documents)['status'], 'HOLD')
+
+    def test_public_text_is_field_specific_and_cannot_accept_arbitrary_edits(self):
+        documents = self.validator.load_package(BASE)
+        for value in (None, True, 0, '', 'Harmless but unreviewed explanation.',
+                      self.validator.PUBLIC_TEXT['db_note']):
+            candidate = copy.deepcopy(documents)
+            candidate['component.json']['log_redaction'] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.validator.validate_package(candidate)
+        # Reviewed F01/F15 prose and typed references remain accepted unchanged.
+        self.assertEqual(self.validator.validate_package(documents)['status'], 'HOLD')
+        self.validator.validate_reference(
+            documents['tests/fixtures/synthetic-private-reference.json'])
+        candidate = copy.deepcopy(documents)
+        candidate['tests/fixtures/synthetic-private-reference.json']['source'] = '/private/source'
+        with self.assertRaises(ValueError):
+            self.validator.validate_package(candidate)
+
+    def test_decoder_recursion_uses_redacted_main_error_record(self):
+        import contextlib
+        import io
+        from unittest import mock
+        out, err = io.StringIO(), io.StringIO()
+        with mock.patch.object(self.validator, 'load_package',
+                               side_effect=RecursionError('private-scene-marker')):
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = self.validator.main(['--component-dir', str(BASE)])
+        self.assertEqual(code, 1)
+        self.assertEqual(json.loads(out.getvalue()),
+                         {'status': 'INVALID', 'error_type': 'RecursionError'})
+        self.assertLess(len(out.getvalue()), 128)
+        self.assertEqual(err.getvalue(), '')
+        self.assertNotIn('private-scene-marker', out.getvalue())
+        self.assertNotIn(str(BASE), out.getvalue())
+
+    def test_raw_deep_json_cli_is_bounded_redacted_and_nonzero(self):
+        import shutil
+        import subprocess
+        import sys
+        import tempfile
+        with tempfile.TemporaryDirectory(prefix='cp091-synthetic-private-marker-') as temp:
+            destination = Path(temp)/'package'
+            for filename in self.validator.FILES:
+                target = destination/filename
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(BASE/filename, target)
+            # Valid raw JSON far below 1 MiB, with excessive decoder nesting.
+            raw = '[' * 10000 + '"synthetic-private-scene-marker"' + ']' * 10000
+            self.assertLess(len(raw.encode()), 1024 * 1024)
+            (destination/'component.json').write_text(raw, encoding='utf-8')
+            command = [sys.executable, '-B']
+            if sys.flags.optimize:
+                command.append('-O')
+            command += [str(BASE/'preservation/validate_contracts.py'),
+                        '--component-dir', str(destination)]
+            result = subprocess.run(command, capture_output=True, text=True,
+                                    timeout=15, check=False)
+            self.assertEqual(result.returncode, 1)
+            self.assertEqual(json.loads(result.stdout),
+                             {'status': 'INVALID', 'error_type': 'RecursionError'})
+            self.assertLess(len(result.stdout), 128)
+            self.assertEqual(result.stderr, '')
+            for private in ('Traceback', str(destination), str(BASE),
+                            'synthetic-private-scene-marker'):
+                self.assertNotIn(private, result.stdout + result.stderr)
+
+
 if __name__ == '__main__':
     unittest.main()
