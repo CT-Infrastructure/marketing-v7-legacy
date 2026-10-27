@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "task": "CP091",
+  "status": "UNKNOWN",
+  "verified_custodian": null,
+  "unblock_owner": "Legacy custodian",
+  "intent": "UNKNOWN",
+  "intent_evidence": null,
+  "private_inventory": "UNKNOWN",
+  "rights": {
+    "value": null,
+    "status": "UNKNOWN",
+    "owner": "Rights/privacy owner",
+    "source": null,
+    "version": null,
+    "sha256": null,
+    "evidence": null
+  },
+  "retention": {
+    "value": null,
+    "status": "UNKNOWN",
+    "owner": "Backup owner",
+    "source": null,
+    "version": null,
+    "sha256": null,
+    "evidence": null
+  },
+  "storage": {
+    "value": null,
+    "status": "UNKNOWN",
+    "owner": "Backup owner",
+    "source": null,
+    "version": null,
+    "sha256": null,
+    "evidence": null
+  },
+  "restore": {
+    "value": null,
+    "status": "UNKNOWN",
+    "owner": "Backup owner",
+    "source": null,
+    "version": null,
+    "sha256": null,
+    "evidence": null
+  },
+  "controller": "UNKNOWN",
+  "pending_receipt": "UNKNOWN",
+  "run_window": "UNKNOWN",
+  "note": "Owner roles identify who must supply evidence; they are not verified custody."
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "task": "CP091",
+  "status": "HOLD",
+  "observed_state": "UNKNOWN",
+  "intent": "UNKNOWN",
+  "controller": null,
+  "generation": null,
+  "revision": null,
+  "original_cutoff": null,
+  "pending_receipt": null,
+  "resources": {
+    "gpu": 0,
+    "integration": 0
+  },
+  "effects": {
+    "autostart": false,
+    "capture": false,
+    "broadcast": false,
+    "recording": false,
+    "device_attach": false,
+    "network": false,
+    "restore_activation": false,
+    "migration": false,
+    "delete": false
+  },
+  "native_qualification": "NOT_RUN",
+  "unblock_owner": "Legacy custodian and trusted controller"
+}

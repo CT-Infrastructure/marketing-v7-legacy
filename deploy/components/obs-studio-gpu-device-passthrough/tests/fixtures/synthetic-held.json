@@ -1,0 +1,26 @@
+{
+  "synthetic": true,
+  "task": "CP091",
+  "intent": "HELD",
+  "observed_state": "UNKNOWN",
+  "controller": "opaque:synthetic-controller",
+  "generation": 1,
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "original_cutoff": 1000,
+  "pending_receipt": "opaque:synthetic-pending",
+  "resources": {
+    "gpu": 0,
+    "integration": 0
+  },
+  "effects": {
+    "autostart": false,
+    "capture": false,
+    "broadcast": false,
+    "recording": false,
+    "device_attach": false,
+    "network": false,
+    "restore_activation": false,
+    "migration": false,
+    "delete": false
+  }
+}

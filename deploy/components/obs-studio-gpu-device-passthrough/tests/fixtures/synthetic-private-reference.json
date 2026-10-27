@@ -1,0 +1,11 @@
+{
+  "id": "opaque:synthetic-artifact",
+  "custodian": "opaque:synthetic-custodian",
+  "source": "opaque:synthetic-source",
+  "version": "synthetic-v1",
+  "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "evidence": "opaque:synthetic-receipt",
+  "rights": "opaque:synthetic-rights",
+  "retention": "opaque:synthetic-retention",
+  "restore": "opaque:synthetic-restore"
+}

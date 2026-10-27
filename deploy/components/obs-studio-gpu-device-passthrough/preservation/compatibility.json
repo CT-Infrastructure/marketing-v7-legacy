@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "task": "CP091",
+  "status": "HOLD",
+  "facts": {
+    "obs_version": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "edition": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "upstream_source": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "artifact_digest": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "os_version": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "architecture": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "qt_abi": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "ffmpeg_abi": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "plugin_versions": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "gpu_model": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "driver_version": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "encoder": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "srt_version": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "license": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "sbom": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    },
+    "vulnerability_evidence": {
+      "value": null,
+      "status": "UNKNOWN",
+      "owner": "Platform owner and OBS custodian",
+      "source": null,
+      "version": null,
+      "sha256": null,
+      "evidence": null
+    }
+  },
+  "qualification": "NOT_RUN",
+  "unblock_owner": "Platform owner and OBS custodian"
+}
