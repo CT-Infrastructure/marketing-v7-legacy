@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "component_id": "CP091",
+  "name": "OBS Studio; GPU/device passthrough",
+  "source_classification": "LEGACY_ISOLATED",
+  "deployment_mode": "isolated-preservation-no-activation",
+  "status": "HOLD",
+  "production_authorized": false,
+  "native_qualification": "NOT_RUN",
+  "placement": "native-isolated-desktop-proposal",
+  "placement_approved": false,
+  "hard_build_prerequisites": [
+    "F01",
+    "F15"
+  ],
+  "interfaces": [
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06",
+    "L07",
+    "L08"
+  ],
+  "version": null,
+  "source": null,
+  "digest": null,
+  "edition": null,
+  "processes": {
+    "persistent": {
+      "status": "UNKNOWN",
+      "value": null
+    },
+    "transient": {
+      "status": "UNKNOWN",
+      "value": null
+    },
+    "new_service": false
+  },
+  "runtime_dependencies": null,
+  "native_db_cache": {
+    "status": "UNKNOWN",
+    "value": null,
+    "note": "Not inferred absent."
+  },
+  "uid": null,
+  "gid": null,
+  "ingress": {
+    "allowed": false,
+    "actual": null
+  },
+  "egress": {
+    "allowed": false,
+    "actual": null
+  },
+  "volumes": null,
+  "secret_references": null,
+  "health": {
+    "status": "UNKNOWN",
+    "startup_allowed": false,
+    "readiness": "HOLD"
+  },
+  "migration": {
+    "allowed": false,
+    "recipe": null
+  },
+  "backup": {
+    "status": "UNKNOWN",
+    "receipt": null
+  },
+  "restore": {
+    "status": "UNKNOWN",
+    "autoactivate": false,
+    "receipt": null
+  },
+  "rollback": {
+    "status": "UNKNOWN",
+    "recipe": null
+  },
+  "resources": {
+    "cpu": 1,
+    "memory_mib": 1536,
+    "gpu": 0,
+    "integration": 0,
+    "disk_mib": null,
+    "pids": null,
+    "note": "Engineering reservation only; native runtime limits UNKNOWN."
+  },
+  "log_redaction": "Opaque references and bounded synthetic results only; no native logs or config dumps.",
+  "license": null,
+  "sbom": null,
+  "vulnerability_evidence": null,
+  "unblock_owner": "Platform owner and OBS custodian",
+  "acceptance": {
+    "A1": "NOT_RUN",
+    "A2": "NOT_RUN",
+    "A3": "NOT_RUN",
+    "A4": "NOT_RUN",
+    "A5": "NOT_RUN",
+    "A6": "NOT_RUN"
+  },
+  "G02": "HOLD"
+}

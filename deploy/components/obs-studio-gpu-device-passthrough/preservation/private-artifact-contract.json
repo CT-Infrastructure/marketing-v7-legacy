@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "task": "CP091",
+  "status": "HOLD",
+  "inventory": null,
+  "reference_format": "opaque:<lowercase-alphanumeric-or-hyphen>",
+  "required_reference_fields": [
+    "id",
+    "custodian",
+    "source",
+    "version",
+    "sha256",
+    "evidence",
+    "rights",
+    "retention",
+    "restore"
+  ],
+  "facts_status": "UNKNOWN",
+  "rules": [
+    "No private paths, hostnames, account identifiers, scene/config dumps, credentials or assets in public artifacts.",
+    "A sanitized opaque ID is a reference, never authority or proof of custody.",
+    "Actual rights, source version, digest and restore receipt remain null until independently supplied and bound.",
+    "A future reference must bind all required fields; malformed or incomplete claims fail closed."
+  ],
+  "unblock_owner": "Legacy custodian and rights/privacy owner"
+}
