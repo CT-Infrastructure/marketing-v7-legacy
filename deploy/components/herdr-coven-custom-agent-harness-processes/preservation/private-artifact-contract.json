@@ -1,0 +1,23 @@
+{
+  "schema": "cp092.private-artifact-contract.v1",
+  "status": "HOLD",
+  "reference_format": "opaque:cp092:<32 lowercase hex>",
+  "allowed_kinds": [
+    "worktree",
+    "session-database",
+    "pending-actions",
+    "receipt-ledger",
+    "lock-record",
+    "failure-history",
+    "credential-custody"
+  ],
+  "references": [],
+  "public_locators_allowed": false,
+  "private_contents_allowed": false,
+  "credential_values_allowed": false,
+  "custody_owner_role": "Authorized private custodian",
+  "locator_resolution": "SEPARATE_AUTHORIZED_PRIVATE_WORKFLOW",
+  "encryption_key_ref": null,
+  "rights_verified": false,
+  "restore_verified": false
+}

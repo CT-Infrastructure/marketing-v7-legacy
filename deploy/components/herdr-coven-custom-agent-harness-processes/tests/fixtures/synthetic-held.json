@@ -1,0 +1,20 @@
+{
+  "schema": "cp092.synthetic-held.v1",
+  "synthetic": true,
+  "session_ref": "synthetic-session",
+  "current_owner_ref": "synthetic-owner",
+  "controller_ref": "synthetic-controller",
+  "generation": 1,
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "original_cutoff": 1000,
+  "native_status": "STOPPED",
+  "restore_target": "HOLD",
+  "pending_actions": [
+    "synthetic-action"
+  ],
+  "pending_receipts": [
+    "synthetic-receipt"
+  ],
+  "effect_status": "UNKNOWN",
+  "replay_authorized": false
+}

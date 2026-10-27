@@ -1,0 +1,8 @@
+{
+  "schema": "cp092.synthetic-private-reference.v1",
+  "synthetic": true,
+  "reference_id": "opaque:cp092:00000000000000000000000000000001",
+  "kind": "session-database",
+  "status": "HOLD",
+  "value": null
+}

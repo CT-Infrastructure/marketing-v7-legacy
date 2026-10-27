@@ -1,0 +1,26 @@
+{
+  "schema": "cp092.held-state.v1",
+  "record_kind": "UNRESOLVED_NATIVE_INVENTORY",
+  "native_status": "UNKNOWN",
+  "preservation_status": "HOLD",
+  "allowed_native_states": [
+    "UNKNOWN",
+    "HELD",
+    "STOPPED",
+    "RETIRED"
+  ],
+  "restore_target": "HOLD",
+  "auto_start": false,
+  "auto_migrate": false,
+  "auto_delete": false,
+  "attach_marketing_credentials": false,
+  "pending_actions": null,
+  "pending_receipts": null,
+  "effect_status": "UNKNOWN",
+  "uncertain_effect_policy": "HOLD_NO_RETRY",
+  "ownership_contract": "ownership.json",
+  "private_reference_ids": [],
+  "backup_verified": false,
+  "restore_verified": false,
+  "replay_authorized": false
+}

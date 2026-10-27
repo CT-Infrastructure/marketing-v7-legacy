@@ -1,0 +1,18 @@
+{
+  "schema": "cp092.ownership.v1",
+  "status": "UNKNOWN",
+  "unblock_owner_role": "Legacy workload owner",
+  "current_owner_ref": null,
+  "controller_ref": null,
+  "session_ref": null,
+  "generation": null,
+  "revision": null,
+  "original_cutoff": null,
+  "evidence_ref": null,
+  "inference_from_process_name": false,
+  "single_controller_required": true,
+  "lock_transfer": "FORBIDDEN_WITHOUT_RECONCILIATION",
+  "preserve_uncommitted_work": true,
+  "preserve_locks": true,
+  "preserve_failure_history": true
+}
