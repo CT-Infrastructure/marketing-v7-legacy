@@ -118,6 +118,31 @@ class PreservationContracts(unittest.TestCase):
             data = copy.deepcopy(self.documents)
             del data["component.json"]["native_facts"][fact]["owner_role"]
             self.reject(data)
+        # Required native logging policy stays explicitly unresolved, with no
+        # invented policy, custodian, source or evidence, and no omitted record.
+        log_redaction = self.documents["component.json"]["native_facts"]["log_redaction"]
+        self.assertEqual(log_redaction, {
+            "status": "UNKNOWN", "value": None,
+            "owner_role": "Legacy workload owner", "source_id": "SRC-002",
+            "evidence_ref": None,
+        })
+        self.assertEqual(V.validate_documents(self.documents, True),
+                         "STRUCTURALLY_VALID_HOLD_NOT_NATIVE_QUALIFIED")
+        data = copy.deepcopy(self.documents)
+        del data["component.json"]["native_facts"]["log_redaction"]
+        self.reject(data)
+        for field in log_redaction:
+            with self.subTest(log_redaction_missing=field):
+                data = copy.deepcopy(self.documents)
+                del data["component.json"]["native_facts"]["log_redaction"][field]
+                self.reject(data)
+        for field, value in (("status", "VERIFIED"), ("value", "invented-policy"),
+                             ("owner_role", "invented-owner"), ("source_id", "SRC-001"),
+                             ("evidence_ref", "invented-proof")):
+            with self.subTest(log_redaction_altered=field):
+                data = copy.deepcopy(self.documents)
+                data["component.json"]["native_facts"]["log_redaction"][field] = value
+                self.reject(data)
 
     def test_no_activation_or_resource_reservation(self):
         self.changed("component.json", "production_authorized", True)

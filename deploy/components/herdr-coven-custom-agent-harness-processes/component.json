@@ -185,6 +185,13 @@
       "source_id": "SRC-002",
       "evidence_ref": null
     },
+    "log_redaction": {
+      "status": "UNKNOWN",
+      "value": null,
+      "owner_role": "Legacy workload owner",
+      "source_id": "SRC-002",
+      "evidence_ref": null
+    },
     "license": {
       "status": "UNKNOWN",
       "value": null,
